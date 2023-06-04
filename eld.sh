@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ################################################################################
 # Nombre del script: eld.sh
 # Descripción: Este script se utiliza para eliminar directorio de forma segura
@@ -6,10 +8,6 @@
 # Versión: 1.0
 # Licencia: Licencia Pública General de GNU (GNU GPL)
 ################################################################################
-
-
-
-#!/bin/bash
 
 eliminar_directorio() {
   directorio=$1
