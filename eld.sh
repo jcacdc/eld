@@ -1,12 +1,11 @@
-###################################
-# Scrypts elimina directorio y archivos recursivamente de forma segura utilizando 
-# scrub shred y rm -rf haciendo que sea muy dificil la recuperaciòn se Debes
-# pasar el directori a eliminar 
-# Ej: eld.sh /directorio/a/eliminar
-# de los datos.
-# 
-# Autor: Jorge Giovannelli 03/06/2023
-# ##############################################
+################################################################################
+# Nombre del script: eld.sh
+# Descripción: Este script realiza X, Y, Z.
+# Autor: Jorge Giovannelli
+# Fecha: 3 de junio de 2023
+# Versión: 1.0
+# Licencia: Licencia Pública General de GNU (GNU GPL)
+################################################################################
 
 
 
