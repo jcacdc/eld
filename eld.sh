@@ -1,6 +1,6 @@
 ################################################################################
 # Nombre del script: eld.sh
-# Descripción: Este script realiza X, Y, Z.
+# Descripción: Este script se utiliza para eliminar directorio de forma segura
 # Autor: Jorge Giovannelli
 # Fecha: 3 de junio de 2023
 # Versión: 1.0
