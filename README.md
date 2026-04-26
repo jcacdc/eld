@@ -1,34 +1,43 @@
-# Script para eliminar directorio de forma segura
+# eld - Borrado Seguro de Directorios (Multi-Shell)
 
-Este script de Bash tiene como objetivo eliminar de forma segura un directorio y todos sus archivos y subdirectorios.
+`eld` es una herramienta de línea de comandos para eliminar directorios y archivos de forma permanente y segura en sistemas Linux. A diferencia de un borrado convencional, `eld` sobreescribe los datos utilizando patrones avanzados para evitar su recuperación.
 
-## Uso
+## 🚀 Características
+- **Borrado Seguro:** Combina `scrub` (patrones NNSA) y `shred` (3 pasadas) para una máxima seguridad.
+- **Soporte Multi-Shell:** Compatible con **Bash**, **Zsh** y **Fish**.
+- **Progreso en tiempo real:** Visualización elegante del porcentaje y el archivo actual siendo procesado.
+- **Recursivo y Robusto:** Borra desde el interior hacia afuera para evitar errores de rutas.
+- **Colores:** Interfaz visual clara en la terminal.
 
-1. Asegúrate de tener Bash instalado en tu sistema.
+## 📋 Requisitos
+El script depende de las siguientes herramientas:
+- `shred` (incluido en `coreutils`)
+- `scrub` (puede requerir instalación manual, ej: `paru -S scrub` en Arch/CachyOS)
 
-2. Descarga el archivo `eld.sh`.
+## 🔧 Instalación y Alias (Opcional)
+Para usarlo como un comando global (`eld`), añade esto a tu archivo de configuración del shell (`.bashrc` o `.zshrc`):
 
-3. Abre una terminal y navega hasta la ubicación donde se encuentra el archivo descargado.
+```bash
+alias eld='/ruta/donde/hayas/clonado/eld.sh'
+```
 
-4. Ejecuta el siguiente comando:
+O si usas **Fish**, crea una función:
+```fish
+function eld
+    /ruta/donde/hayas/clonado/eld.sh $argv
+end
+```
 
-   ```bash
-   bash eld.sh /ruta/al/directorio
+## 💻 Uso
+Simplemente ejecuta el comando seguido de la ruta del directorio que deseas eliminar:
 
-Asegúrate de reemplazar /ruta/al/directorio con la ruta del directorio que deseas eliminar.
+```bash
+eld /ruta/al/directorio
+```
 
-Descripción del script
+## ⚠️ Advertencia
+Este script elimina los datos de forma **irreversible**. No es posible recuperar los archivos una vez el proceso haya comenzado. Úsalo con responsabilidad.
 
-El script consta de varias partes:
-
-    Verifica si el directorio especificado existe.
-    Cuenta el número total de archivos y directorios dentro del directorio.
-    Elimina de forma segura todos los archivos dentro del directorio, sobrescribiéndolos con datos aleatorios y eliminándolos varias veces.
-    Elimina los subdirectorios de forma recursiva.
-    Imprime mensajes de progreso durante el proceso de eliminación.
-
-Si el directorio se elimina exitosamente, se mostrará un mensaje indicando que se ha eliminado de forma segura. En caso de que el directorio no exista, se mostrará un mensaje de error correspondiente.
-
-Recuerda tener precaución al utilizar este script, ya que eliminará permanentemente el directorio y su contenido de forma segura.
-
-¡Utilízalo con responsabilidad!
+---
+**Autor:** Jorge Giovannelli (Actualizado por Gemini CLI)
+**Licencia:** GNU GPL
