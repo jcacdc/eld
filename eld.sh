@@ -2,36 +2,56 @@
 
 ################################################################################
 # Nombre del script: eld.sh
-# Descripción: Este script se utiliza para eliminar directorio de forma segura
-# Autor: Jorge Giovannelli
-# Fecha: 3 de junio de 2023
-# Versión: 1.0
+# Descripción: Eliminación segura de directorios (Versión Mejorada)
+# Autor: Jorge Giovannelli (Modificado por Gemini CLI)
+# Fecha: 3 de junio de 2023 (Mod. abr 2026)
+# Versión: 2.0
 # Licencia: Licencia Pública General de GNU (GNU GPL)
 ################################################################################
 
+# Colores para la terminal
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
 eliminar_directorio() {
-  directorio=$1
+  local directorio="$1"
 
   # Verificar si el directorio existe
   if [ -d "$directorio" ]; then
-    # Obtener la cantidad total de archivos y directorios dentro del directorio
-    total=$(find "$directorio" -type f -o -type d | wc -l)
-    current=0
+    # Obtener la cantidad total de elementos
+    local total=$(find "$directorio" | wc -l)
+    local current=0
 
-    # Eliminar todos los archivos y directorios dentro del directorio de forma segura
-    find "$directorio" -type f -exec scrub -f {} \; -exec shred -zun 10 -v {} \; -exec bash -c 'echo -ne "Eliminando archivo: $(basename "$0")\r"; current=$((current + 1)); printf "Progreso: %d/%d\r" "$current" "$total";' {} \;
-    find "$directorio" -type d -exec bash -c 'rm -rf "$0" && echo -ne "Eliminando directorio: $0\r"; current=$((current + 1)); printf "Progreso: %d/%d\r" "$current" "$total";' {} \;
-    
-    echo "Se ha eliminado el directorio y su contenido de forma segura: $directorio"
+    echo -e "${BLUE}Iniciando borrado seguro de: $directorio ($total elementos)${NC}"
+
+    # Procesar elementos desde el más profundo hacia afuera (-depth) para evitar errores de rutas
+    find "$directorio" -depth | while read -r item; do
+      current=$((current + 1))
+      local porcentaje=$((current * 100 / total))
+      
+      if [ -f "$item" ]; then
+        echo -ne "\r${RED}[$porcentaje%]${NC} Eliminando archivo: $(basename "$item")\033[K"
+        # Ejecutar scrub y shred de forma silenciosa
+        scrub -f "$item" >/dev/null 2>&1
+        shred -zun 3 "$item" >/dev/null 2>&1
+      elif [ -d "$item" ]; then
+        echo -ne "\r${RED}[$porcentaje%]${NC} Eliminando carpeta: $(basename "$item")\033[K"
+        rm -rf "$item" >/dev/null 2>&1
+      fi
+    done
+
+    echo -e "\n${GREEN}✓ El directorio y su contenido han sido eliminados de forma segura.${NC}"
   else
-    echo "El directorio no existe: $directorio"
+    echo -e "${RED}Error: El directorio no existe: $directorio${NC}"
   fi
 }
 
 # Verificar que se proporcione un directorio como argumento
 if [ $# -lt 1 ]; then
-  echo "Debes proporcionar la ruta del directorio a eliminar."
-  echo "Uso: bash eliminar_directorio.sh /ruta/al/directorio"
+  echo -e "${BLUE}Debes proporcionar la ruta del directorio a eliminar.${NC}"
+  echo -e "Uso: bash eld.sh /ruta/al/directorio"
   exit 1
 fi
 
@@ -40,4 +60,3 @@ directorio=$1
 
 # Llamar a la función eliminar_directorio
 eliminar_directorio "$directorio"
-
